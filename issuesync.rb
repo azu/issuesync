@@ -48,8 +48,10 @@ class IssueSync
     issues = issue_fetcher.call(repo, last_updated)
 
     for issue in issues
-      issue_file = path + "#{issue.number}.md"
-      patch_file = path + "#{issue.number}.patch"
+      escaped_title = issue.title.gsub(/^.*(\\|\/)/, '')
+      print escaped_title + "\n"
+      issue_file = path + "#{issue.number}-#{escaped_title}.md"
+      patch_file = path + "#{issue.number}-#{escaped_title}.patch"
 
       issue_file.open('w') do |file|
         formatter.format(file, issue, comment_fetcher.call(issue))
